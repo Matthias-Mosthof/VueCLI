@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+}
+
+main,
+figure,
+figcaption,
+img {
+  display: block;
+} /*--- <main> for IE 11 ---*/
+img {
+  max-width: 100%;
+  height: auto;
+}
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+fieldset {
+  border: 0;
+}
+input,
+textarea,
+select,
+button {
+  display: block;
+  max-width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+label {
+  display: table;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"] {
+  -webkit-appearance: none;
+}

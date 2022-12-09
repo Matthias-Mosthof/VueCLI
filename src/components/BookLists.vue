@@ -1,0 +1,151 @@
+<template>
+  <section class="table-item">
+    <h2 class="table-item__hl">All Books</h2>
+    <table class="table-item__table">
+      <thead>
+        <tr>
+          <th class="table-item__table-head-name">Name</th>
+          <th class="table-item__table-head--isbn">ISBN</th>
+          <th class="th.table-item__table-head--action">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <BookListRow
+          v-for="({ title, isbn, isBookmarked }, index) of books"
+          :key="isbn"
+          :title="title"
+          :isbn="isbn"
+          :isBookmarked="isBookmarked"
+          @bookmarking123="bookmarkBook(index)"
+          class="table-item__table-row"
+          ><template #actionCo1></template>
+        </BookListRow>
+      </tbody>
+    </table>
+  </section>
+</template>
+
+<script>
+import BookListRow from "@/components/BookListRow.vue";
+export default {
+  components: {
+    BookListRow,
+  },
+  data() {
+    return {
+      clickCounter: 0,
+      books: [
+        {
+          title: "Practical Rust Web Projects",
+          isbn: "9781484265888",
+          author: "Shing Lyu",
+          publisher: "Apress",
+          price: "$28.75",
+          numPages: 256,
+          isBookmarked: false,
+        },
+        {
+          title: "Using WebPagetest",
+          isbn: "9781491902592",
+          author: "Rick Viscomi, Andy Davies, Marcel Duran",
+          publisher: "O'Reilly Media",
+          price: "$25.80",
+          numPages: 214,
+          isBookmarked: false,
+        },
+        {
+          title: "Web Scraping with Python",
+          isbn: "9781491910290",
+          author: "Ryan Mitchell",
+          publisher: "O'Reilly Media",
+          price: "$14.00",
+          numPages: 256,
+          isBookmarked: false,
+        },
+        {
+          title: "High Performance Mobile Web",
+          isbn: "9781491912553",
+          author: "Maximiliano Firtman",
+          publisher: "O'Reilly Media",
+          price: "$7.00",
+          numPages: 326,
+          isBookmarked: false,
+        },
+      ],
+    };
+  },
+  async created() {
+    const response = await fetch("http://localhost:4730/books");
+    this.books = await response.json();
+  },
+  methods: {
+    bookmarkBook(index) {
+      this.clickCounter++;
+      if (this.clickCounter === 1) {
+        this.books[index].isBookmarked = true;
+      }
+      if (this.clickCounter === 2) {
+        this.books[index].isBookmarked = false;
+        this.clickCounter = 0;
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.table-item__table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+}
+.table-item__table-head-name {
+  width: 65%;
+}
+.table-item__table-head-isbn {
+  width: 20%;
+}
+.table-item__table-head-actions {
+  width: 15%;
+}
+.table-item__table-row button {
+  opacity: 0;
+  padding: 5px;
+  transition: opacity 500ms;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.table-item__table-row:hover button {
+  opacity: 1;
+}
+.table-item__table thead tr {
+  background-color: var(--primary);
+  color: #ffffff;
+  text-align: left;
+}
+.table-item__table th {
+  padding: 12px 15px;
+}
+
+.table-item__table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.table-item__table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+.table-item__table tbody tr:last-of-type {
+  border-bottom: 2px solid var(--primary);
+}
+.table-item__table tbody tr.active-row {
+  font-weight: bold;
+  color: var(--primary);
+}
+.table-item__hl {
+  margin-top: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--primary-dark);
+}
+</style>
